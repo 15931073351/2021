@@ -1,0 +1,10 @@
+{
+	"person":
+	[
+		{"id":"1","username":"如来佛祖","age":200,"address":"西天大雷音寺"},
+		{"id":"2","username":"唐三藏","age":150,"address":"东土大唐"},
+		{"id":"3","username":"孙悟空","age":180,"address":"花果山水帘东"},
+		{"id":"4","username":"猪八戒","age":150,"address":"高老庄"},
+		{"id":"5","username":"沙和尚","age":100,"address":"通天河"}
+	]
+}

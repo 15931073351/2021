@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script>
+			//步骤一： 创建浏览器的操作对象
+			var xmlhttp; //全局变量
+			function createXMLHttpRequest(){
+				if (window.XMLHttpRequest)
+				{
+				    //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+				    xmlhttp=new XMLHttpRequest();
+				}
+				else
+				{
+				    // IE6, IE5 浏览器执行代码
+				    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				return xmlhttp;
+			}
+			
+			//步骤二：js 的触发函数
+			function check(){
+				//获取浏览器的操作对象
+				//https://www.runoob.com/ajax/ajax-xmlhttprequest-send.html
+				xmlhttp = createXMLHttpRequest();
+				//开始浏览器操作设置
+				xmlhttp.onreadystatechange=callBackFunc;//此处，函数名称不写()
+
+				xmlhttp.open("post","test.json",true);
+				xmlhttp.send();
+			}
+			
+			// 步骤三：回调函数，当浏览器状态值发生改变的时候，触发的函数
+			function callBackFunc(){
+				 if (xmlhttp.readyState==4 && xmlhttp.status==200) 
+				 { 
+					 /*alert("可以干事业了！！！！！！！！！！！！！！");*/
+				 	//步骤3-1 ：接受json文件
+				 	var ss  = xmlhttp.responseText;//responseXML 是接受xml 文件的格式的，一般用不到
+				 	/* alert(ss+"-----"+ss.length); */
+				 	//步骤3-2 ：解析接收的数据,解析是固定格式
+				 	var strObj = eval("("+ss+")");
+				 	var s = strObj.person;//解析出来的person 是数组
+				 	
+				 	//遍历数组内容，将内容放置到有页面上去
+				 	var str="";
+				 	for(var i=0;i<s.length;i++){
+				 		str+="<tr>"+
+							"<td>"+s[i].id+"</td>"+
+							"<td>"+s[i].username+"</td>"+
+							"<td>"+s[i].age+"</td>"+
+							"<td>"+s[i].address+"</td>"+
+						"</tr>";
+						document.getElementById("grid").innerHTML=str;
+				 	}
+				 }/* else{
+				 	alert("xmlhttp.readyState="+xmlhttp.readyState+"----xmlhttp.status:"+xmlhttp.status);
+				 } */
+			}
+			
+		</script>
+	</head>
+	<body>
+		ajax html 静态页面加载动态数据内容,专业术语： js 异步交互数据
+		<input type="button" value="点我" onclick="check()" />
+		<table>
+		    <thead>
+			<tr>
+				<td>编号</td>
+				<td>名字</td>
+				<td>年龄</td>
+				<td>地址</td>
+			</tr>
+			</thead>
+			<tbody id="grid"></tbody>
+		</table>
+	</body>
+</html>

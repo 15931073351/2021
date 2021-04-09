@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- 
+	当自己写的js css 文件 和bootstrap 文件同事出现在页面上的时候，文件放置顺序
+		先 bootstrap
+		再是自己的文件
+ -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" 
+	rel="stylesheet">
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="select.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){/* onLoad 事件 */
+	$("#empInfo").change(function(){
+		//alert("-------1------------");
+		//var id = document.getElementById("empInfo").value;
+		//alert("-------2------------");
+		var id2 = $("#empInfo").val();
+		/* alert(",id2="+id2); */
+		//加入模态框 toggle 显示模态框 之后，触发函数：function(){}
+		$('#myModal').modal('toggle');
+		//加载模态框中需要的数据
+		$.ajax({
+	        url:'DeptServlet',/* 提交请求的路径 */
+	        data:{"act":"getEmpById","id":id2},/* 向后台传递的参数 */
+	        type:"post",
+	        /* 从服务器返回的数据的类型  dataType:"json",*/
+	        success:function(d){/* 后台返回前台成功了，回调函数 */
+	          /*  alert(typeof d); */
+	        	var a = eval("("+d+")");
+	        	/* alert(a); */
+	           $("#eid").val(a.eid);
+	           $("#username").val(a.username);
+	           $("#ename").val(a.ename);
+	        },
+	        error: function(){
+	            alert("error!!!!");
+	        }
+	    });
+	});
+});
+
+
+</script>
+</head>
+<body onLoad="check()">
+	<select id="getDept"  onchange="getDeptInfo()">
+	
+	</select>
+	
+	<select id="empInfo" >
+	
+	</select>
+<!-- 模态框   begin -->
+<div class="modal fade" id="myModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">员工信息</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+        	<div class="form-group">
+			    <label for="eid" class="col-sm-2 control-label">员工编号:</label>
+			    <div class="col-sm-10">
+			      <input type="text" name="eid" id="eid" class="form-control"  placeholder="员工编号">
+			    </div>
+			</div>
+			<div class="form-group">
+			    <label for="username" class="col-sm-2 control-label">用户名:</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" name="username" id="username" placeholder="用户名">
+			    </div>
+			</div>
+			<div class="form-group">
+			    <label for="ename" class="col-sm-2 control-label">用户姓名:</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" name="ename" id="ename" placeholder="用户姓名">
+			    </div>
+			</div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 模态框   end -->	
+</body>
+</html>
